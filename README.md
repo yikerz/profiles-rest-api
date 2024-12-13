@@ -123,8 +123,32 @@
 
 #### PUT, PATCH and DELETE Requests
 
-1. Create functions `put`, `patch` and `delete` which only return `RESPONSE({'method': '<method>'})`
+1. Create functions `put`, `patch` and `delete` which only return `Response({'method': '<method>'})`
 2. Check to see the options are now available on the page
+
+### Introduction to Viewsets
+
+#### List Viewset Function
+
+1. Create class `HelloViewSet(viewsets.ViewSet)` in `profiles_api/views.py`
+2. Create function `list` ([cmd 18](#commands))
+
+- Instantiate `a_viewset` with some messages
+- Return `Response` intaking a dict with keys `message` and `a_viewset`
+
+#### Register URL Router
+
+1. Instantiate `DefaultRouter` as `router` in `profiles_api/urls.py` ([cmd 19](#commands))
+2. Register `HelloViewSet` as `hello-viewset` ([cmd 20](#commands))
+3. Include `router.urls` as `''`in the `urlpatterns`
+
+#### Other Viewset Functions
+
+1. Instantiate `serializer_class` in `HelloViewSet`
+2. Create function `create` in `HelloViewSet` (same as `post`)
+3. Create function `retrieve`, `update`, `partial_update` and `destroy` in `HelloViewSet`
+
+- Return `Response({'http_method': '<method>'})`
 
 ### Commands
 
@@ -224,3 +248,19 @@ def post(self, request):
   else:
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
+
+18.
+
+```python
+class HelloViewSet(viewsets.ViewSet):
+  a_viewset = [
+    "message 1",
+    "message 2",
+    "message 3",
+  ]
+
+  return Response({"message": "Hello!", "a_viewset": a_viewset})
+```
+
+19. `router = DefaultRouter()`
+20. `router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')`
