@@ -85,6 +85,21 @@
 1. Register the `models.UserProfile` in `profiles_api/admin.py` ([cmd 14](#commands))
 2. Create superuser ([cmd 15](#commands))
 
+### Introduction to API Views
+
+#### Hello World API View
+
+1. Create class `HelloApiView(APIView)` ([cmd 16](#commands))
+
+- Create function `get` with `request` input
+- Create a list `an_apiview` of text messages
+- Return `Response` intaking a dict with keys `message` and `an_apiview`
+
+2. Create `urls.py` in `profiles_api`
+3. Include `profiles_api.urls` as `api/` in `profiles_project/urls.py`
+4. Add `HelloApiView` as `hello-view/` in `profiles_api/urls.py`
+5. Check the response by navigating to `/api/hello-view/`
+
 ### Commands
 
 1. `ssh-keygen -t rsa -b 4096 -C "yikerz0425@gmail.com"`
@@ -152,3 +167,20 @@ class UserProfileManager(BaseUserManager):
 13. `python manage.py migrate`
 14. `admin.site.register(models.UserProfile)`
 15. `python manage.py createsuperuser`
+16.
+
+```python
+class HelloApiView(APIView):
+  def get(self, request, format=None):
+    an_apiview= [
+      "message 1",
+      "message 2",
+      "message 3",
+      "message 4",
+    ]
+
+    return Response({
+      'message': 'Hello world',
+      'an_apiview': an_apiview,
+    })
+```
