@@ -100,6 +100,32 @@
 4. Add `HelloApiView` as `hello-view/` in `profiles_api/urls.py`
 5. Check the response by navigating to `/api/hello-view/`
 
+#### Serializer
+
+1. Create `serializers.py` in `profiles_api`
+2. Create class `HelloSerialzer(serializers.Serializer)`
+
+- `name`: `CharField` with `max_length=10`
+
+3. Instantiate `serializer_class` as `HelloSerializer` in `HelloApiView`
+
+#### POST Request
+
+1. Create function `post` in `HelloApiView` ([cmd 17](#commands))
+
+- Instantiate `serializer` using `serializer_class` intaking `data=request.data`
+- If `serializer` is valid
+  - Get `name` from the validated data
+  - Create message "Hello <name>"
+  - Return `Response` intaking a dict with key `message`
+- If `serializer` is not valid
+  - Return `Response` intaking `serializer.errors` with `status=status.HTTP_400_BAD_REQUEST`
+
+#### PUT, PATCH and DELETE Requests
+
+1. Create functions `put`, `patch` and `delete` which only return `RESPONSE({'method': '<method>'})`
+2. Check to see the options are now available on the page
+
 ### Commands
 
 1. `ssh-keygen -t rsa -b 4096 -C "yikerz0425@gmail.com"`
@@ -183,4 +209,18 @@ class HelloApiView(APIView):
       'message': 'Hello world',
       'an_apiview': an_apiview,
     })
+```
+
+17.
+
+```python
+def post(self, request):
+  serializer = self.serializer_class(data=request.data)
+
+  if serializer.is_valid():
+    name = serializer.validated_data.get('name')
+    message = f'Hello {name}'
+    return Response({'message': message})
+  else:
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
